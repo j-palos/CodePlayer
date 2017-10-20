@@ -1,0 +1,185 @@
+<html>
+
+    <head>
+
+        <Title>CodePlayer</Title>
+        <script type="text/javascript" src="jquery.min.js"></script>
+
+        <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
+        <script src="jquery-ui/jquery-ui.min.js"></script>
+        <script src="jquery-ui/jquery-ui.js"></script>
+        <style type="text/css">
+
+            body{
+                font-family: sans-serif;
+                padding: 0;
+                margin: 0;
+            }
+            #topBar{
+
+                background-color: #EEEDEF;
+                height: 30px;
+                font-size: 20px;
+                padding: 10px;
+                width: 100%;
+
+            }
+
+            #logo{
+                font-weight: bold;
+                float:left;
+                padding: 3px; 5px;
+
+            }
+
+            #buttoncontainer{
+                width: 300px;
+                margin: 0 auto;
+            }
+
+            .togglebutton{
+
+                float:left;
+                padding: 4px 4px;
+                border: 1px solid grey;
+                border-right: none;
+            }
+
+            #html{
+                border-top-left-radius: 4px !important;
+                border-bottom-left-radius: 4px;
+            }
+
+            #output{
+                border-right: 1px solid grey !important;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+            .highlight{
+                background-color: #EBF4FF ;
+            }
+
+            .active{
+                background-color: grey;
+            }
+
+            #textcontainer{
+                /*  
+                width: 100%;
+                float: left;
+                */
+            }
+
+            textarea{
+/*                width: 50%;*/
+                border-top: none;
+                border-color: gray;
+                resize: none;
+                
+            }
+            
+
+            iframe{
+                border: none;
+            }
+            .panel{
+                width: 50%;
+                float:left;
+                border-left: none;
+            }
+            
+            .hidden{
+                display: none;
+            }
+            
+            
+            body {padding:0; margin:0;}
+
+        </style>
+
+
+
+
+    </head>
+
+    <body>
+
+        <div id="topBar"><div id="logo">Code Player</div>
+            <div id="buttoncontainer">
+                <div class="togglebutton active" id="html">
+                    HTML
+                </div>
+                <div class="togglebutton"  id="css">CSS</div>
+                <div class="togglebutton"  id="javascript">Javascript</div> 
+                <div class="togglebutton active"  id="output">Output</div>
+            </div>
+        </div>
+                                                             
+                                                             
+        <div id="textcontainer">
+            <textarea class="panel"  id="html-window"  >Insert your code here to see a live preview!</textarea>
+            <textarea class="hidden panel" id="css-window"  ></textarea>
+            <textarea class="hidden panel" id="javascript-window"></textarea>
+            <iframe  class="panel" id="output-window"></iframe>
+        </div>
+        
+        
+        
+        <script type="text/javascript">
+            
+            function update(){
+                $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#css-window").val() + "</style></head><body>" + $("#html-window").val() +"</body></html>");
+                
+                
+                document.getElementById("output-window").contentWindow. eval($("#javascript-window").val());
+               
+            }
+            
+            update();
+            
+            $(".togglebutton").hover(function(){
+                $(this).addClass("highlight");
+                ;
+
+            },
+                                     function(){
+                $(this).removeClass("highlight");
+            }
+                                    )
+            
+            $(".togglebutton").click(function(){
+                $(this).toggleClass("active");
+                
+                 var panelID = "#" + this.id + "-window";
+                $(panelID).toggleClass("hidden");
+                
+                //now adjust width
+                var newWidth = $(window).width() / (4- $(".hidden").length);
+
+                $(".panel").css("width", newWidth);
+            })
+            
+            
+                
+
+
+           $("textarea").on('change keyup paste', function(){
+        update();
+} )
+            
+            
+                                     
+            $(".panel").height($(window).height() - $("#topBar").height() -25);
+            $(".panel").width(($(window).width()/2) -5 );
+            
+        </script>
+
+
+
+
+
+
+    </body>
+
+</html>
